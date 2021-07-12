@@ -4,14 +4,17 @@ import Router from './routes';
 import ThemeConfig from './theme';
 // components
 import ScrollToTop from './components/ScrollToTop';
+import Apollo from './Apollo';
 
 // ----------------------------------------------------------------------
 
 export default function App() {
   return (
-    <ThemeConfig>
-      <ScrollToTop />
-      <Router />
-    </ThemeConfig>
+    <Apollo>
+      <ThemeConfig>
+        <ScrollToTop />
+        <Router />
+      </ThemeConfig>
+    </Apollo>
   );
 }
