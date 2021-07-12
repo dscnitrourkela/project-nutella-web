@@ -4,7 +4,7 @@ import Router from './routes';
 import ThemeConfig from './theme';
 // components
 import ScrollToTop from './components/ScrollToTop';
-import Apollo from './Apollo';
+import Apollo from './config/Apollo';
 
 // ----------------------------------------------------------------------
 
