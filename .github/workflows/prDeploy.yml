@@ -26,6 +26,7 @@ jobs:
           touch .env
           echo REACT_APP_CLOUDFLARE_APIKEY=$REACT_APP_CLOUDFLARE_APIKEY >> .env
           cat .env
+          echo ${{secrets.FIREBASE_SERVICE_ACCOUNT}}
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
@@ -35,7 +36,6 @@ jobs:
 
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
-        run: echo ${{secrets.FIREBASE_SERVICE_ACCOUNT}}
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
