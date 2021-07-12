@@ -4,6 +4,9 @@ on:
   release:
     types: [released]
 
+env:
+  REACT_APP_CLOUDFLARE_APIKEY: ${{secrets.CLOUDFLARE_APIKEY}}
+
 jobs:
   firebase-prod-deploy:
     name: Firebase Production Deploy
@@ -16,6 +19,12 @@ jobs:
         uses: actions/setup-node@master
         with:
           node-version: '14.x'
+
+      - name: Create .env File
+        run: |
+          touch .env
+          echo REACT_APP_CLOUDFLARE_APIKEY=$REACT_APP_CLOUDFLARE_APIKEY >> .env
+          cat .env
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile

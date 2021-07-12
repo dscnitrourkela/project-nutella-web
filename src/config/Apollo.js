@@ -23,10 +23,10 @@ const link = from([
   errorLink,
   new HttpLink({
     // TODO: Use the production link when deployed
-    uri: 'http://127.0.0.1:8000/graphql'
-    // process.env.NODE_ENV === 'production'
-    //   ? 'https://aptiche.dscnitrourkela.org/graphql?apikey=SriramForTheDiro'
-    //   : 'https://aptiche.dscnitrourkela.org/graphql?apikey=SriramForTheDiro',
+    uri:
+      process.env.NODE_ENV === 'production'
+        ? `https://aptiche.dscnitrourkela.org/graphql?apikey=${process.env.REACT_APP_CLOUDFLARE_APIKEY}`
+        : 'https://127.0.0.1:8000/graphql'
   })
 ]);
 
