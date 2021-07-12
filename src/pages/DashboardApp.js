@@ -1,5 +1,8 @@
 // material
 import { Box, Grid, Container, Typography } from '@material-ui/core';
+import { useQuery } from '@apollo/client';
+import getUsers from '../graphql/queries/getUsers';
+
 // components
 import Page from '../components/Page';
 import {
@@ -20,6 +23,19 @@ import {
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
+  const {
+    loading: usersLoading,
+    error: usersError,
+    data: usersData
+  } = useQuery(getUsers, {
+    variables: { ids: [] }
+  });
+
+  console.log({ usersError, usersLoading, usersData });
+
+  if (usersLoading && !usersData) return <h1>Loading...</h1>;
+  if (usersError) return <div>{JSON.stringify(usersError)}</div>;
+
   return (
     <Page title="Dashboard | Minimal-UI">
       <Container maxWidth="xl">
