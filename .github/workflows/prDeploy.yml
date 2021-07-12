@@ -26,7 +26,6 @@ jobs:
           touch .env
           echo REACT_APP_CLOUDFLARE_APIKEY=$REACT_APP_CLOUDFLARE_APIKEY >> .env
           cat .env
-          echo ${{secrets.FIREBASE_SERVICE_ACCOUNT}}
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
