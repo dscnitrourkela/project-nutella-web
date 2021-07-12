@@ -5,21 +5,27 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
-//
+// Config
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
+import configureFirebase from './config/Firebase';
 
 // ----------------------------------------------------------------------
-
-ReactDOM.render(
-  <HelmetProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </HelmetProvider>,
-  document.getElementById('root')
-);
+configureFirebase()
+  .then(() => {
+    ReactDOM.render(
+      <HelmetProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </HelmetProvider>,
+      document.getElementById('root')
+    );
+  })
+  .catch((error) => {
+    console.error('Firebase Initialization Error: ', error);
+  });
 
 // If you want to enable client cache, register instead.
 serviceWorker.unregister();
