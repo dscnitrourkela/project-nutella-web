@@ -22,7 +22,6 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 const link = from([
   errorLink,
   new HttpLink({
-    // TODO: Use the production link when deployed
     uri:
       process.env.NODE_ENV === 'production'
         ? `https://aptiche.dscnitrourkela.org/graphql?apikey=${process.env.REACT_APP_CLOUDFLARE_APIKEY}`

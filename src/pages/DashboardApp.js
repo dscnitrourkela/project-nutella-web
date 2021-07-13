@@ -31,10 +31,8 @@ export default function DashboardApp() {
     variables: { ids: [] }
   });
 
-  console.log({ usersError, usersLoading, usersData });
-
-  if (usersLoading && !usersData) return <h1>Loading...</h1>;
-  if (usersError) return <div>{JSON.stringify(usersError)}</div>;
+  // if (usersLoading && !usersData) return <h1>Loading...</h1>;
+  // if (usersError) return <div>{JSON.stringify(usersError)}</div>;
 
   return (
     <Page title="Dashboard | Minimal-UI">
