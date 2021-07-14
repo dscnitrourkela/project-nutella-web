@@ -21,6 +21,6 @@ const configureFirebase = async () => {
   }
 };
 
-export const { analytics } = firebase;
+export const { auth } = firebase;
 
 export default configureFirebase;

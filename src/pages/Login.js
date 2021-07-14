@@ -1,14 +1,14 @@
-import { Link as RouterLink } from 'react-router-dom';
+import React from 'react';
 // material
 import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Card, Stack, Link, Container, Typography } from '@material-ui/core';
-// layouts
-import AuthLayout from '../layouts/AuthLayout';
-// components
+import { Card, Stack, Container, Typography, TextField } from '@material-ui/core';
+// import ReactPhoneInput from 'react-phone-input-material-ui';
+import { LoadingButton } from '@material-ui/lab';
+// import MuiPhoneNumber from 'material-ui-phone-number';
+
+import { auth } from '../config/Firebase';
 import Page from '../components/Page';
 import { MHidden } from '../components/@material-extend';
-import { LoginForm } from '../components/authentication/login';
-import AuthSocial from '../components/authentication/AuthSocial';
 
 // ----------------------------------------------------------------------
 
@@ -40,15 +40,38 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Login() {
+  const [buttonState, setButtonState] = React.useState(true);
+  const [phoneNumber, setPhoneNumber] = React.useState();
+  const [otp, setOtp] = React.useState();
+  const [otpConfirm, setOtpConfirm] = React.useState();
+
+  const onHandleGetOtp = async () => {
+    const recaptcha = new auth.RecaptchaVerifier('recaptcha');
+    try {
+      const confirmation = await auth().signInWithPhoneNumber(`+91${phoneNumber}`, recaptcha);
+      if (confirmation) {
+        setOtpConfirm(confirmation);
+        setButtonState(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleConfirmOtp = async () => {
+    const user = await otpConfirm.confirm(otp);
+    if (user) {
+      // console.log(user);
+      auth()
+        .currentUser.getIdToken(true)
+        .then((idToken) => {
+          console.log(idToken);
+        });
+    }
+  };
+
   return (
     <RootStyle title="Login | Minimal-UI">
-      <AuthLayout>
-        Don’t have an account? &nbsp;
-        <Link underline="none" variant="subtitle2" component={RouterLink} to="/register">
-          Get started
-        </Link>
-      </AuthLayout>
-
       <MHidden width="mdDown">
         <SectionStyle>
           <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
@@ -62,22 +85,40 @@ export default function Login() {
         <ContentStyle>
           <Stack sx={{ mb: 5 }}>
             <Typography variant="h4" gutterBottom>
-              Sign in to Minimal
+              Sign in to AptiChe Admin
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
           </Stack>
-          <AuthSocial />
 
-          <LoginForm />
+          {/* <ReactPhoneInput
+            value={phoneNumber}
+            defaultCountry="ind"
+            onChange={(value) => setPhoneNumber(value)}
+            component={TextField}
+          /> */}
 
-          <MHidden width="smUp">
-            <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-              Don’t have an account?&nbsp;
-              <Link variant="subtitle2" component={RouterLink} to="register">
-                Get started
-              </Link>
-            </Typography>
-          </MHidden>
+          <TextField
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            placeholder="Phone Number"
+          />
+
+          <div id="recaptcha" />
+
+          {!buttonState && (
+            <TextField value={otp} onChange={(e) => setOtp(e.target.value)} placeholder="OTP" />
+          )}
+
+          <LoadingButton
+            style={{ marginTop: '20px' }}
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={false}
+            onClick={buttonState ? onHandleGetOtp : handleConfirmOtp}
+          >
+            {buttonState ? 'Get OTP' : 'Confirm OTP'}
+          </LoadingButton>
         </ContentStyle>
       </Container>
     </RootStyle>
