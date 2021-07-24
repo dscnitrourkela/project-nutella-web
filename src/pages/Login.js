@@ -61,7 +61,6 @@ export default function Login() {
   const handleConfirmOtp = async () => {
     const user = await otpConfirm.confirm(otp);
     if (user) {
-      // console.log(user);
       auth()
         .currentUser.getIdToken(true)
         .then((idToken) => {
