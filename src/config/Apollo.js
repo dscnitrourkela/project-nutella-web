@@ -8,13 +8,9 @@ const cache = new InMemoryCache();
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    graphQLErrors.map(({ message, location, path }) =>
-      // console.log(new Error({ message, location, path })),
-      console.error({ message, location, path })
-    );
+    graphQLErrors.map(({ message, location, path }) => console.error({ message, location, path }));
   } else if (networkError) {
     const { message, name, respose, result, bodyText, stack, statusCode } = networkError;
-    // console.log(new Error(message, name, respose, result, bodyText, stack, statusCode));
     console.error({ message, name, respose, result, bodyText, stack, statusCode });
   }
 });
@@ -22,11 +18,10 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 const link = from([
   errorLink,
   new HttpLink({
-    // TODO: Use the production link when deployed
     uri:
       process.env.NODE_ENV === 'production'
         ? `https://aptiche.dscnitrourkela.org/graphql?apikey=${process.env.REACT_APP_CLOUDFLARE_APIKEY}`
-        : 'https://127.0.0.1:8000/graphql'
+        : 'http://127.0.0.1:8000/graphql'
   })
 ]);
 
